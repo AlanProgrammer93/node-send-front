@@ -12,8 +12,11 @@ import {
  } from '../../types/index';
 import clienteAxios from '../../config/axios';
 import tokenAuth from '../../config/tokenAuth';
+import { useRouter } from 'next/router';
 
 const AuthState = ({children}) => {
+
+    const router = useRouter();
 
     const initialState = {
         token: typeof window !== 'undefined' ? localStorage.getItem('token') : '',
@@ -36,19 +39,28 @@ const AuthState = ({children}) => {
                 payload: respuesta.data.msg
             });
 
+            setTimeout(() => {
+                dispatch({
+                    type: LIMPIAR_ALERTA
+                })
+            }, 3000);
+    
+            router.push('/login');
+
         } catch (error) {
             dispatch({
                 type: REGISTRO_ERROR,
                 payload: error.response.data.msg
-            })
+            });
+
+            // Limpiar alerta despues de 3 segundos
+            setTimeout(() => {
+                dispatch({
+                    type: LIMPIAR_ALERTA
+                })
+            }, 3000);
         }
 
-        // Limpiar alerta despues de 3 segundos
-        setTimeout(() => {
-            dispatch({
-                type: LIMPIAR_ALERTA
-            })
-        }, 3000);
     }
 
     const iniciarSesion = async datos => {

@@ -21,7 +21,7 @@ const Login = () => {
     }
   }, [autenticado]);
 
-  // Formulario y validaacion con formik y yup
+  // Formulario y validacion con formik y yup
   const formik = useFormik({
     initialValues: {
       email: '',
